@@ -7,6 +7,7 @@ import { Button } from 'components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from 'components/ui/tabs';
 import { useTaskContext } from '../../contexts/task-context';
 import { TaskManagerFilterSheet } from '../task-manager-filters-sheet/task-manager-filters-sheet';
+import { useToast } from 'hooks/use-toast';
 
 /**
  * TaskManagerToolbar Component
@@ -46,6 +47,10 @@ interface TaskManagerToolbarProps {
   handleViewMode: (view: string) => void;
 }
 
+// type TestResponse = {
+//   name: string;
+// };
+
 export default function TaskManagerToolbar({
   onOpen,
   viewMode = 'board',
@@ -53,6 +58,7 @@ export default function TaskManagerToolbar({
 }: Readonly<TaskManagerToolbarProps>) {
   const isMobile = useIsMobile();
   const { t } = useTranslation();
+  const { toast } = useToast();
 
   const { searchQuery, setSearchQuery } = useTaskContext();
 
@@ -72,6 +78,14 @@ export default function TaskManagerToolbar({
 
   const handleTaskModalOpen = () => {
     viewMode === 'board' && onOpen();
+  };
+
+  const handleCreateDataStructure = async () => {
+    toast({
+      variant: 'success',
+      title: t('ADDED_DATA_STRUCTURE'),
+      description: t(''),
+    });
   };
 
   // mobile view
@@ -145,6 +159,10 @@ export default function TaskManagerToolbar({
           {t('TASK_MANAGER')}
         </h3>
       </div>
+      <Button onClick={handleCreateDataStructure} size="sm" className="h-8 text-sm font-bold">
+        <Plus />
+        {t('ADD_DATA_STRUCTURES')}
+      </Button>
       <div className="flex gap-2">
         <div className="relative w-64">
           <Search className="absolute left-3 top-1/2 h-3 w-3 -translate-y-1/2 bg-background" />
